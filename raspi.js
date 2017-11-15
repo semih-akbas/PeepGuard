@@ -6,8 +6,6 @@ var isPi = require('detect-rpi');
 
 var currentTemperature = 0.0;
 
-update_temperature(function(currentTemperature){});
-
 app.get("/",function(req,res){
     res.sendFile(__dirname + '/raspi.html');
 });
@@ -41,5 +39,6 @@ var update_temperature = function (callback) {
 }
 
 http.listen(3000,function(){
+    update_temperature(function(currentTemperature){});
     console.log("Listening on 3000");
 });
