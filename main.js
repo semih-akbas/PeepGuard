@@ -1,18 +1,37 @@
-var express = require('express');
-var app = express();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
-var fs = require('fs');
-var path = require('path');
-var spawn = require('child_process').spawn;
+var express     = require('express');
+var app         = express();
+var http        = require('http').Server(app);
+var io          = require('socket.io')(http);
+var fs          = require('fs');
+var path        = require('path');
+var spawn       = require('child_process').spawn;
+var hbs         = require('express-handlebars');
+
 //TODO:Add GPIO package for Raspberry PI
 //var gpio = require('rpi-gpio');
 
+//app.set('views', (__dirname + '/../views'));
+app.engine('handlebars', hbs({defaultLayout: 'main'}));
+app.set('view engine', 'handlebars');
+
+//Routes
+var diagnosticsRouter = require('./routes/diagnostics');
+
 var proc;
+app.use(function timeLog (req, res, next) {
+    console.log('Request time: ', Date.now());
+    next();
+});
+
+
+/*
 app.use('/', express.static(path.join(__dirname, 'stream')));
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 });
+*/
+app.use('/diagnostics', diagnosticsRouter);
+
 
 var sockets = {};
 io.on('connection', function (socket) {

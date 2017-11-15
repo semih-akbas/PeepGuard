@@ -96,6 +96,7 @@
       "resolved": "https://registry.npmjs.org/callsite/-/callsite-1.0.0.tgz",
       "version": "1.0.0"
     },
+    "chartkick": "^2.2.4",
     "child_process": {
       "integrity": "sha1-sffn/HPSXn/R1FWtyU4UODAYK1o=",
       "resolved": "https://registry.npmjs.org/child_process/-/child_process-1.0.2.tgz",
@@ -136,6 +137,7 @@
       "resolved": "https://registry.npmjs.org/cookie-signature/-/cookie-signature-1.0.6.tgz",
       "version": "1.0.6"
     },
+    "d3node-linechart": "0.0.7",
     "debug": {
       "integrity": "sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==",
       "requires": {
@@ -249,6 +251,7 @@
       "version": "1.8.1"
     },
     "express": "^4.16.2",
+    "express-handlebars": "^3.0.0",
     "file-type": {
       "integrity": "sha1-G2AOX8ofvcboDApwxxyNul95BsU=",
       "resolved": "https://registry.npmjs.org/file-type/-/file-type-4.4.0.tgz",
@@ -342,6 +345,7 @@
       "resolved": "https://registry.npmjs.org/inherits/-/inherits-2.0.3.tgz",
       "version": "2.0.3"
     },
+    "install": "^0.10.1",
     "ipaddr.js": {
       "integrity": "sha1-1LUFvemUaYfM8PxY2QEP+WB+P6A=",
       "resolved": "https://registry.npmjs.org/ipaddr.js/-/ipaddr.js-1.5.2.tgz",
@@ -409,6 +413,7 @@
       "resolved": "https://registry.npmjs.org/node-raspistill/-/node-raspistill-0.0.14.tgz",
       "version": "0.0.14"
     },
+    "npm": "^5.5.1",
     "object-component": {
       "integrity": "sha1-8MaapQ78lbhmwYb0AKM3acsvEpE=",
       "resolved": "https://registry.npmjs.org/object-component/-/object-component-0.0.3.tgz",
@@ -604,6 +609,7 @@
       "resolved": "https://registry.npmjs.org/ultron/-/ultron-1.1.0.tgz",
       "version": "1.1.0"
     },
+    "uninstall": "0.0.0",
     "unpipe": {
       "integrity": "sha1-sr9O6FFKrmFltIF4KdIbLvSZBOw=",
       "resolved": "https://registry.npmjs.org/unpipe/-/unpipe-1.0.0.tgz",
