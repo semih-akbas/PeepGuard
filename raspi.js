@@ -32,7 +32,7 @@ var update_temperature = function (callback) {
     }
     else{
         temperature = fs.readFileSync("/sys/class/thermal/thermal_zone0/temp") / 1000;
-        console.log("Current CPU Temperature: " + temperature);
+        console.log("Current CPU Temperature: " + temperature + " °C");
     }
     
     return;

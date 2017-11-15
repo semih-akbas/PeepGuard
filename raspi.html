@@ -12,7 +12,7 @@
               socket.emit('status added',$("#comment").val());
             });
             socket.on('refresh feed',function(msg){
-              $("#show_comments").append(msg + '<br /><br />');
+              $("#show_comments").append(msg + ' °C<br /><br />');
             });
       });
       </script>
