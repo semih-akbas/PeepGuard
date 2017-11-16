@@ -6,7 +6,7 @@ var moment      = require('moment');
 
 var router = express.Router();
 var socket = null;
-var interval = 5000;
+var interval = 20000;
 
 router.get('/', function(req, res) {   
     io = req.app.io;
@@ -16,7 +16,7 @@ router.get('/', function(req, res) {
 });
 
 var UpdateTemperature = function () {
-    var time = moment().format('YYYYmmDDhhmm');
+    var time = moment().format('YYYY-MM-DD hh:mm:ss');
 
     if(!isPi()){
         temperature = Math.random() * 100;
