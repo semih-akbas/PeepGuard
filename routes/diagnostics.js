@@ -1,46 +1,41 @@
-var express     =   require("express");
-var path        =   require("path");
-var http        =   require('http').Server(express);
-var io          =   require("socket.io")(http);
-var fs          =   require("fs");
-var isPi        =   require('detect-rpi');
+var express     = require("express");
+var path        = require("path");
+var fs          = require("fs");
+var isPi        = require('detect-rpi');
+var moment      = require('moment');
 
-var router      =   express.Router();
+var router = express.Router();
+var socket = null;
+var interval = 5000;
+
 router.get('/', function(req, res) {   
-    
-    //setTimeout(UpdateTemperature, 2000, function(nil){});
-    res.render('main', {deneme: 'hebele', points: '0,80 20,60 40,80 60,20'});
-    
-});
-
-io.on('connection',function(socket){  
-    console.log("A user is connected");
-    /*socket.on('refresh-temperature',function(temperature){
-        UpdateTemperature(function(currentTemperature){
-        if(currentTemperature){
-            io.emit('refresh feed',currentTemperature);
-        } else {
-            io.emit('error');
-        }
-        });
-    });*/
+    io = req.app.io;
+    UpdateTemperature();
+    temperatureData = fs.readFileSync(__dirname + "/temperatureLog.txt");
+    res.render('layouts/main', {deneme: 'hebele', temperature_data: temperatureData});
 });
 
 var UpdateTemperature = function () {
+    var time = moment().format('YYYYmmDDhhmm');
+
     if(!isPi()){
         temperature = Math.random() * 100;
     }
     else{
         temperature = fs.readFileSync("/sys/class/thermal/thermal_zone0/temp") / 1000;
-        fs.appendFileSync(__dirname + "/temperatureLog.txt", temperature + "\r\n");
     }
+    
+    var data = "['" + time + "', " + temperature + "], "
 
     console.log("Current CPU Temperature: " + temperature + " °C");
-    //setTimeout(UpdateTemperature, 2000, function(temperature){});           
+    //console.log("Data: " + data);
+    fs.appendFileSync(__dirname + "/temperatureLog.txt", data + "\r\n");    
 
-    io.emit('refresh-temperature',temperature);
-
-    return;
+    socket.emit('refresh-temperature',temperature);
+    setTimeout(UpdateTemperature, interval, function(temperature){});               
 }
-
-module.exports = router
+module.exports = function(io){
+    var express = require("express");
+    socket = io;
+    return router;
+}

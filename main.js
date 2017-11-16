@@ -2,16 +2,19 @@ var express     = require('express');
 var app         = express();
 var http        = require('http').Server(app);
 var path        = require('path');
-var exphbs         = require('express-handlebars');
+var exphbs      = require('express-handlebars');
+var io          =   require('socket.io')(http);
 
 //TODO:Add GPIO package for Raspberry PI
 //var gpio = require('rpi-gpio');
+io.on('connection',function(socket){  
+	console.log("A user is connected on main.js");
+});
 
 //Routers
-var diagnosticsRouter = require('./routes/diagnostics');
-
+var diagnosticsRouter = require('./routes/diagnostics')(io);
 var hbs = exphbs.create({
-	defaultLayout: "home",
+	defaultLayout: "main",
 	extname: "html",
 	helpers: {
 		section: function (name, options) {
@@ -24,12 +27,10 @@ var hbs = exphbs.create({
 
 app.engine('html', hbs.engine);
 app.set('view engine', 'html');
-
 app.use(function timeLog (req, res, next) {
     console.log('Request time: ', Date.now());
     next();
 });
-
 app.use('/diagnostics', diagnosticsRouter);
 
 http.listen(3000, function () {

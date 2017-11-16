@@ -96,7 +96,6 @@
       "resolved": "https://registry.npmjs.org/callsite/-/callsite-1.0.0.tgz",
       "version": "1.0.0"
     },
-    "chartkick": "^2.2.4",
     "child_process": {
       "integrity": "sha1-sffn/HPSXn/R1FWtyU4UODAYK1o=",
       "resolved": "https://registry.npmjs.org/child_process/-/child_process-1.0.2.tgz",
@@ -389,6 +388,7 @@
       "resolved": "https://registry.npmjs.org/mime-types/-/mime-types-2.1.17.tgz",
       "version": "2.1.17"
     },
+    "moment": "^2.19.2",
     "ms": {
       "integrity": "sha1-VgiurfwAvmwpAd9fmGF4jeDVl8g=",
       "resolved": "https://registry.npmjs.org/ms/-/ms-2.0.0.tgz",
