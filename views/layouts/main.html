@@ -1,21 +1,19 @@
 <!DOCTYPE html>
 <html>
     <head>
-      <title>Socket.io</title>
+      <title>PeepGuard</title>
       <script src="/socket.io/socket.io.js"></script>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
       <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
       <script src = "http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-      <script src="chartkick.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>      
       <script>
       $(document).ready(function(){
             var socket = io();
             $("#update_temperature").click(function(){
-              socket.emit('status added',$("#comment").val());
+              //socket.emit('refresh-temperature');
             });
-            socket.on('refresh feed',function(msg){
-              $("#show_comments").append(msg + ' °C<br /><br />');
+            socket.on('refresh-temperature',function(temperature){
+              $("#current_temperature").append(temperature + ' °C');
             });
       });
       </script>
@@ -25,35 +23,30 @@
         <h2>PeepGuard: Diagnostics</h2>
         <input type="button" id="update_temperature" value="Refresh">
       </div>
+      <div>
+        <div><h4>Current Temperature: </h4></div>
+        <div id="current_temperature" 
+          style = "width: 200px;
+                  height: 50px;
+                  background-color:blue;
+                  margin-top:20px;
+                  margin-left:20px;"></div>
+      </div>
       <div>{{deneme}}</div>
       <div id = "line_chart"
       class = "jumbotron"
       style = "width: 50%;
                height: 40%;
                padding: 2%;
-               margin-left:5%;
-               margin-top:-23px;">
+               margin-left:20px;
+               margin-top:20px;">
                 <svg viewBox="0 0 500 100" class="chart">
                   <polyline
                     fill="none"
                     stroke="#0074d9"
                     stroke-width="3"
-                    points="
-                      0,120
-                      20,60
-                      40,80
-                      60,20"/>
+                    points="{{points}}"/>
                 </svg>
-      </div>     
-      <div
-         id    = "show_comments"
-         class = "jumbotron"
-         style = "width: 38%;
-                  height: 70%;
-                  padding: 2%;
-                  margin-left:5%;
-                  margin-top:-53px;"
-       >
-        </div>
+      </div>
     </body>
   </html>
