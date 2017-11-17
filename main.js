@@ -3,7 +3,14 @@ var app         = express();
 var http        = require('http').Server(app);
 var path        = require('path');
 var exphbs      = require('express-handlebars');
-var io          =   require('socket.io')(http);
+var io          = require('socket.io')(http);
+var common      = require('./helpers/common');
+
+//Start CPU Temp Logging
+var cpuTempLogInterval = 500;
+setInterval(function(){
+    common.logCurrentCPUTemperature(1000, io);
+}, cpuTempLogInterval);
 
 //TODO:Add GPIO package for Raspberry PI
 //var gpio = require('rpi-gpio');
@@ -11,7 +18,7 @@ io.on('connection',function(socket){
 	console.log("A user is connected on main.js");
 });
 
-//Routers
+//Express Routers
 var diagnosticsRouter = require('./routes/diagnostics')(io);
 var hbs = exphbs.create({
 	defaultLayout: "main",
@@ -24,6 +31,8 @@ var hbs = exphbs.create({
 		}
 	}
 });
+
+
 
 app.engine('html', hbs.engine);
 app.set('view engine', 'html');
