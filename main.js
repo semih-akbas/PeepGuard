@@ -7,7 +7,7 @@ var io          = require('socket.io')(http);
 var common      = require('./helpers/common');
 
 //Start CPU Temp Logging
-var cpuTempLogInterval = 500;
+var cpuTempLogInterval = 5000;
 setInterval(function(){
     common.logCurrentCPUTemperature(1000, io);
 }, cpuTempLogInterval);
