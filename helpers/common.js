@@ -9,7 +9,6 @@ var logCurrentCPUTemperature = function (maxLogCount, socket) {
     var time = moment().format('YYYY-MM-DD hh:mm:ss');
     var logPath = __dirname + "/../cpuTempLog.txt";
     var temperature = readCPUTemperature();
-    socket.emit('refresh-temperature',temperature);
     
     var array = [];
     if(fs.existsSync(logPath))
@@ -28,7 +27,8 @@ var logCurrentCPUTemperature = function (maxLogCount, socket) {
         fileContent = fileContent + array[i] + "\r\n";
     }
     fs.writeFileSync(logPath, fileContent);  
-    /*
+    socket.emit('refresh-temperature',temperature, data);
+    
     var memoryPercentage = ((os.freemem() / os.totalmem())*100).toFixed(0);
     socket.emit("refresh-memory", memoryPercentage);
     
@@ -38,9 +38,8 @@ var logCurrentCPUTemperature = function (maxLogCount, socket) {
     },
     function(err, percent, seconds) {
         socket.emit("refresh-cpu", percent.toFixed(0))
-        console.log("CPU Usage %: " + percent.toFixed(0));
     });  
-    */
+    
     return array.length;            
 }
 

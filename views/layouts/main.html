@@ -9,54 +9,61 @@
       <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
       <script type="text/javascript">
         google.charts.load('current', {'packages':['corechart', 'gauge']});
-        
-        google.charts.setOnLoadCallback(drawChart);
-        var cpuPercentage;
-        var memoryPercentage;
+        google.charts.setOnLoadCallback(drawCharts);
 
-        function drawChart() {
-          drawTemperatureChart();
-          drawGauges();
-        }
-
-        function drawTemperatureChart() {
-          var data = google.visualization.arrayToDataTable([
-            ['Time', 'Temperature(°C)'],
-            {{{temperature_data}}}
-          ]);
-  
-          var options = {
+        var cpuTemperature = 0;
+        var cpuPercentage = 0;
+        var memoryPercentage = 0;
+        var arrCpuTempChart = [
+                                ['Time', 'Temperature(°C)'],
+                                {{{temperature_data}}}
+                               ];
+        var dataCpuTempChart;                     
+        var dataGauge;
+        var gaugeOptions = {
             title: 'CPU Temperature Trend',
             curveType: 'function',
             legend: { position: 'bottom' }
           };
-  
-          var chart = new google.visualization.AreaChart(document.getElementById('curve_chart'));
-  
-          chart.draw(data, options);
+        var drawGauges;
+
+        function drawCharts() {
+          dataCpuTempChart = google.visualization.arrayToDataTable(arrCpuTempChart);
+          dataGauge = google.visualization.arrayToDataTable([
+              ['Label', 'Value'],
+              ['CPU Temp',cpuTemperature],
+              ['Memory',memoryPercentage],
+              ['CPU',cpuPercentage]
+            ]);
+          drawTemperatureChart(dataCpuTempChart);
+          drawGauges(0,0);
         }
 
-        function drawGauges(memory, cpu) {
+        function drawTemperatureChart(data) {
+          dataCpuTempChart = data;
+          var chart = new google.visualization.AreaChart(document.getElementById('cputemp_chart'));  
+          chart.draw(data, gaugeOptions);
+        }
+
+        drawGauges = function (temperature, memory, cpu) {
           cpuPercentage = cpu;
           memoryPercentage = memory;
-          console.log("CPU:" + cpu);
-          console.log("MEMORY:" + memory);
-          var data = google.visualization.arrayToDataTable([
-          ['Label', 'Value'],
-          ['Memory', memory],
-          ['CPU', cpu]
-        ]);
+          
+          dataGauge.setValue(0, 1, temperature);
+          dataGauge.setValue(1, 1, memory);
+          dataGauge.setValue(2, 1, cpu);
+          
+          var options = {
+            width: 400, height: 120,
+            redFrom: 90, redTo: 100,
+            yellowFrom:75, yellowTo: 90,
+            minorTicks: 5
+          };
 
-        var options = {
-          width: 400, height: 120,
-          redFrom: 90, redTo: 100,
-          yellowFrom:75, yellowTo: 90,
-          minorTicks: 5
-        };
-  
-          var chart = new google.visualization.Gauge(document.getElementById('cpu_chart'));
-        
-          chart.draw(data, options);
+          google.charts.load('current', {'packages':['gauge']});
+          var gauge_chart = new google.visualization.Gauge(document.getElementById('gauge_chart'));
+          console.log("DATAGAUGE: " + gauge_chart);
+          gauge_chart.draw(dataGauge, options);
         }
         
       </script>
@@ -66,16 +73,17 @@
             $("#update_temperature").click(function(){
               //socket.emit('refresh-temperature');
             });
-            socket.on('refresh-data',function(temperature, cpu){
-              $("#current_temperature").text(temperature + ' °C');
+            socket.on('refresh-temperature',function(temperature, data){
+              console.log("refresh-temperature: " + temperature + " Data: " + data);
+              arrCpuTempChart.push(data)
+              dataCpuTempChart = google.visualization.arrayToDataTable(arrCpuTempChart)
+              drawGauges(temperature, memoryPercentage, cpuPercentage);
             });
             socket.on('refresh-cpu',function(cpu){
-              console.log("refresh-cpu");
-              drawGauges(memoryPercentage, cpu);
+              drawGauges(cpuTemperature, memoryPercentage, cpu);
             });
             socket.on('refresh-memory',function(memory){
-              console.log("refresh-memory");
-              drawGauges(memory, cpuPercentage);
+              drawGauges(cpuTemperature, memory, cpuPercentage);
             });
       });
       </script>
@@ -86,18 +94,16 @@
       </div>
       <table>
           <tr>
-            <td>
-                <div style="margin:15px">
-                    <div style="float: left;padding: 10px;"><h4>Current Temperature: </h4></div>
-                    <h3><div id="current_temperature" style = "float: left;padding: 10px;margin-top:5px;color:blue;"></div></h3>
-                </div>
-            </td>
-            <td>
-                <div id = "cpu_chart"
-                style = "width: 200px;
-                         height: 200px;
-                         padding: 5px;"
-                </div>
+            <td colspan="2">&nbsp;</td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <div id = "gauge_chart"
+              style = "width: 200px;
+                       height: 200px;
+                       padding: 10px;
+                       margin-left:10px;"
+              </div>
             </td>
           </tr>
           <tr>
@@ -114,7 +120,7 @@
           </tr>
           <tr>
             <td>
-                <div id = "curve_chart"
+                <div id = "cputemp_chart"
                 class = "jumbotron"
                 style = "width: 600px;
                          height: 200px;
