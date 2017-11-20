@@ -6,7 +6,6 @@ var moment      = require('moment');
 
 var router = express.Router();
 var socket = null;
-var interval = 20000;
 var logPath = __dirname + "/../cpuTempLog.txt";
 
 //BASE_URL/diagnostics

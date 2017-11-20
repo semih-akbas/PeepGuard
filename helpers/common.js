@@ -16,6 +16,7 @@ var logCurrentCPUTemperature = function (maxLogCount, socket) {
         array = fs.readFileSync(logPath).toString().split('\r\n');
     }
 
+    var dataArr = [time, parseFloat(temperature)];   
     var data = "['" + time + "', " + temperature + "], "
     var newLength = array.push(data);
     //remove oldest item if there are more than {maxLogCount} logs
@@ -27,7 +28,7 @@ var logCurrentCPUTemperature = function (maxLogCount, socket) {
         fileContent = fileContent + array[i] + "\r\n";
     }
     fs.writeFileSync(logPath, fileContent);  
-    socket.emit('refresh-temperature',temperature, data);
+    socket.emit('refresh-temperature',temperature, dataArr);
     
     var memoryPercentage = ((os.freemem() / os.totalmem())*100).toFixed(0);
     socket.emit("refresh-memory", memoryPercentage);
