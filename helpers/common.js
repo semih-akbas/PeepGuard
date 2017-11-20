@@ -2,7 +2,6 @@ var fs          = require("fs");
 var isPi        = require('detect-rpi');
 var moment      = require('moment');
 var os          = require('os');
-var byteman     = require('byteman');
 var cpuStat = require('cpu-stat');
 
 var logCurrentCPUTemperature = function (maxLogCount, socket) {
