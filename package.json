@@ -166,6 +166,7 @@
       "version": "1.0.4"
     },
     "detect-rpi": "^1.2.0",
+    "diskusage": "^0.2.4",
     "ee-first": {
       "integrity": "sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=",
       "resolved": "https://registry.npmjs.org/ee-first/-/ee-first-1.1.1.tgz",
@@ -469,6 +470,7 @@
       "resolved": "https://registry.npmjs.org/path-to-regexp/-/path-to-regexp-0.1.7.tgz",
       "version": "0.1.7"
     },
+    "pretty-bytes": "^4.0.2",
     "promise": {
       "integrity": "sha1-SJZUxpJha4qlWwck+oCbt9tJxb8=",
       "requires": {

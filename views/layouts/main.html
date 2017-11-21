@@ -14,13 +14,14 @@
         var cpuTemperature = 0;
         var cpuPercentage = 0;
         var memoryPercentage = 0;
+        var diskPercentage = 0;
         var arrCpuTempChart = [
                                 ['Time', 'Temperature(°C)'],
                                 {{{temperature_data}}}
                                ];
         var dataCpuTempChart;                     
         var dataGauge;
-        var gaugeOptions = {
+        var chartOptions = {
             title: 'CPU Temperature Trend',
             curveType: 'function',
             legend: { position: 'bottom' }
@@ -31,10 +32,11 @@
           dataCpuTempChart = google.visualization.arrayToDataTable(arrCpuTempChart);
           dataGauge = google.visualization.arrayToDataTable([
               ['Label', 'Value'],
-              ['CPU Temp',cpuTemperature],
-              ['Memory',memoryPercentage],
-              ['CPU',cpuPercentage]
-            ]);
+              ['CPU Temp (°C)',cpuTemperature],
+              ['Memory %',memoryPercentage],
+              ['CPU %',cpuPercentage],
+              ['Disk %',diskPercentage]
+              ]);
           drawTemperatureChart(dataCpuTempChart);
           drawGauges(0,0);
         }
@@ -42,19 +44,21 @@
         function drawTemperatureChart(data) {
           dataCpuTempChart = data;
           var chart = new google.visualization.AreaChart(document.getElementById('cputemp_chart'));  
-          chart.draw(data, gaugeOptions);
+          chart.draw(data, chartOptions);
         }
 
-        drawGauges = function (temperature, memory, cpu) {
+        drawGauges = function (temperature, memory, cpu, disk) {
           cpuPercentage = cpu;
           memoryPercentage = memory;
+          diskPercentage = disk;
           
           dataGauge.setValue(0, 1, temperature);
           dataGauge.setValue(1, 1, memory);
           dataGauge.setValue(2, 1, cpu);
+          dataGauge.setValue(3, 1, disk);
           
           var options = {
-            width: 400, height: 120,
+            width: 500, height: 250,
             redFrom: 90, redTo: 100,
             yellowFrom:75, yellowTo: 90,
             minorTicks: 5
@@ -77,13 +81,16 @@
               arrCpuTempChart.push(data);
               dataCpuTempChart = google.visualization.arrayToDataTable(arrCpuTempChart);
               drawTemperatureChart(dataCpuTempChart);
-              drawGauges(temperature, memoryPercentage, cpuPercentage);
+              drawGauges(temperature, memoryPercentage, cpuPercentage, diskPercentage);
             });
             socket.on('refresh-cpu',function(cpu){
-              drawGauges(cpuTemperature, memoryPercentage, cpu);
+              drawGauges(cpuTemperature, memoryPercentage, cpu, diskPercentage);
             });
             socket.on('refresh-memory',function(memory){
-              drawGauges(cpuTemperature, memory, cpuPercentage);
+              drawGauges(cpuTemperature, memory, cpuPercentage, diskPercentage);
+            });
+            socket.on('refresh-diskinfo',function(diskpercentage, diskavailable, diskused, disktotal){
+              drawGauges(cpuTemperature, memoryPercentage, cpuPercentage, diskpercentage);
             });
       });
       </script>

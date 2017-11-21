@@ -1,8 +1,11 @@
-var fs          = require("fs");
-var isPi        = require('detect-rpi');
-var moment      = require('moment');
-var os          = require('os');
-var cpuStat = require('cpu-stat');
+var fs              = require("fs");
+var isPi            = require('detect-rpi');
+var moment          = require('moment');
+var os              = require('os');
+const prettyBytes   = require('pretty-bytes');
+var cpuStat         = require('cpu-stat');
+const disk          = require('diskusage');
+const util = require('util');
 
 var logCurrentCPUTemperature = function (maxLogCount, socket) {
     var time = moment().format('YYYY-MM-DD hh:mm:ss');
@@ -37,11 +40,22 @@ var logCurrentCPUTemperature = function (maxLogCount, socket) {
         sampleMs: 2000,
     },
     function(err, percent, seconds) {
-        socket.emit("refresh-cpu", percent.toFixed(0))
+        socket.emit("refresh-cpu", percent.toFixed(0));
     });  
     
+    var diskInfo = getDiskInfo();
+    var used = diskInfo.total - diskInfo.available;
+    var percentage = ((used / diskInfo.total)*100).toFixed(0);
+    socket.emit('refresh-diskinfo', percentage, prettyBytes(diskInfo.available), prettyBytes(used), prettyBytes(diskInfo.total));
     return array.length;            
 }
+
+var getDiskInfo = function (){
+    let path = os.platform() === 'win32' ? 'c:' : '/';
+    let info = disk.checkSync(path);
+    return info;
+}
+
 
 var readCPUTemperature = function () {
     if(!isPi()){
@@ -56,3 +70,4 @@ var readCPUTemperature = function () {
 
 module.exports.readCPUTemperature = readCPUTemperature;
 module.exports.logCurrentCPUTemperature = logCurrentCPUTemperature;
+module.exports.getDiskInfo = getDiskInfo;
