@@ -44,16 +44,24 @@ var logCurrentCPUTemperature = function (maxLogCount, socket) {
     });  
     
     var diskInfo = getDiskInfo();
-    var used = diskInfo.total - diskInfo.available;
-    var percentage = ((used / diskInfo.total)*100).toFixed(0);
-    socket.emit('refresh-diskinfo', percentage, prettyBytes(diskInfo.available), prettyBytes(used), prettyBytes(diskInfo.total));
+    if(null != diskInfo){
+        var used = diskInfo.total - diskInfo.available;
+        var percentage = ((used / diskInfo.total)*100).toFixed(0);
+        socket.emit('refresh-diskinfo', percentage, prettyBytes(diskInfo.available), prettyBytes(used), prettyBytes(diskInfo.total));
+    }
     return array.length;            
 }
 
 var getDiskInfo = function (){
     var path = os.platform() === 'win32' ? 'c:' : '/';
-    var info = disk.checkSync(path);
-    return info;
+    try{
+        var info = disk.checkSync(path);
+        return info;
+    }
+    catch (err) {
+        console.log(err);
+        return null;
+    }
 }
 
 
