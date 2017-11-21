@@ -51,8 +51,8 @@ var logCurrentCPUTemperature = function (maxLogCount, socket) {
 }
 
 var getDiskInfo = function (){
-    let path = os.platform() === 'win32' ? 'c:' : '/';
-    let info = disk.checkSync(path);
+    var path = os.platform() === 'win32' ? 'c:' : '/';
+    var info = disk.checkSync(path);
     return info;
 }
 
