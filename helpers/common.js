@@ -4,7 +4,7 @@ var moment          = require('moment');
 var os              = require('os');
 const prettyBytes   = require('pretty-bytes');
 var cpuStat         = require('cpu-stat');
-const disk          = require('diskusage');
+//const disk          = require('diskusage');
 const util = require('util');
 
 var logCurrentCPUTemperature = function (maxLogCount, socket) {
@@ -43,16 +43,16 @@ var logCurrentCPUTemperature = function (maxLogCount, socket) {
         socket.emit("refresh-cpu", percent.toFixed(0));
     });  
     
-    var diskInfo = getDiskInfo();
+    /*var diskInfo = getDiskInfo();
     if(null != diskInfo){
         var used = diskInfo.total - diskInfo.available;
         var percentage = ((used / diskInfo.total)*100).toFixed(0);
         socket.emit('refresh-diskinfo', percentage, prettyBytes(diskInfo.available), prettyBytes(used), prettyBytes(diskInfo.total));
-    }
+    }*/
     return array.length;            
 }
 
-var getDiskInfo = function (){
+/*var getDiskInfo = function (){
     var path = os.platform() === 'win32' ? 'c:' : '/';
     try{
         var info = disk.checkSync(path);
@@ -62,7 +62,7 @@ var getDiskInfo = function (){
         console.log(err);
         return null;
     }
-}
+}*/
 
 
 var readCPUTemperature = function () {
@@ -78,4 +78,4 @@ var readCPUTemperature = function () {
 
 module.exports.readCPUTemperature = readCPUTemperature;
 module.exports.logCurrentCPUTemperature = logCurrentCPUTemperature;
-module.exports.getDiskInfo = getDiskInfo;
+//module.exports.getDiskInfo = getDiskInfo;
