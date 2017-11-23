@@ -10,6 +10,8 @@ var logPath = __dirname + "/../cpuTempLog.txt";
 
 //BASE_URL/diagnostics
 router.get('/', function(req, res) {   
+    res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Headers", "X-Requested-With");
     io = req.app.io;
     temperatureData = fs.readFileSync(logPath);
     res.render('layouts/main', {deneme: 'hebele', temperature_data: temperatureData});
