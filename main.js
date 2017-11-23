@@ -3,7 +3,7 @@ var app         = express();
 var http        = require('http').Server(app);
 var path        = require('path');
 var exphbs      = require('express-handlebars');
-var io          = require('socket.io')(http);
+var io          = require('socket.io')(http, {origins:'sammyhg.ddns.net:*'});
 var common      = require('./helpers/common');
 
 //Start CPU Temp Logging
@@ -32,17 +32,10 @@ var hbs = exphbs.create({
 	}
 });
 
-
-
 app.engine('html', hbs.engine);
 app.set('view engine', 'html');
 app.use(function timeLog (req, res, next) {
 	console.log('Request time: ', Date.now());
-
-	res.setHeader('Access-Control-Allow-Origin', "http://sammyhg.ddns.net:3000");
-	res.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
-	res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-	res.header('Access-Control-Allow-Credentials', true);
     next();
 });
 app.use('/diagnostics', diagnosticsRouter);
