@@ -5,6 +5,7 @@ var path        = require('path');
 var exphbs      = require('express-handlebars');
 var io          = require('socket.io')(http);
 var common      = require('./helpers/common');
+var cors 		= require('cors')
 
 //Start CPU Temp Logging
 var cpuTempLogInterval = 1000;
@@ -32,6 +33,7 @@ var hbs = exphbs.create({
 	}
 });
 
+app.use(cors());
 app.engine('html', hbs.engine);
 app.set('view engine', 'html');
 app.use(function timeLog (req, res, next) {
