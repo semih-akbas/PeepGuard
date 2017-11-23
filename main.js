@@ -37,7 +37,12 @@ var hbs = exphbs.create({
 app.engine('html', hbs.engine);
 app.set('view engine', 'html');
 app.use(function timeLog (req, res, next) {
-    console.log('Request time: ', Date.now());
+	console.log('Request time: ', Date.now());
+	var allowedOrigins = ['http://127.0.0.1:3000', 'http://localhost:3000', 'http://sammyhg.ddns.net:3000'];
+	var origin = req.headers.origin;
+	if(allowedOrigins.indexOf(origin) > -1){
+		 res.setHeader('Access-Control-Allow-Origin', origin);
+	}
     next();
 });
 app.use('/diagnostics', diagnosticsRouter);
