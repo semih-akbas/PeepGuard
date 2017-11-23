@@ -136,6 +136,7 @@
       "resolved": "https://registry.npmjs.org/cookie-signature/-/cookie-signature-1.0.6.tgz",
       "version": "1.0.6"
     },
+    "cors": "^2.8.4",
     "cpu-stat": "^2.0.1",
     "d3node-linechart": "0.0.7",
     "debug": {

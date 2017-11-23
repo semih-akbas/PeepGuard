@@ -3,7 +3,7 @@ var app         = express();
 var http        = require('http').Server(app);
 var path        = require('path');
 var exphbs      = require('express-handlebars');
-var io          = require('socket.io')(http, {origins:'sammyhg.ddns.net:*'});
+var io          = require('socket.io')(http);
 var common      = require('./helpers/common');
 
 //Start CPU Temp Logging
