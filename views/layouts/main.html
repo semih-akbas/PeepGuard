@@ -48,7 +48,8 @@
         drawGauges = function (temperature, memory, cpu) {
           cpuPercentage = cpu;
           memoryPercentage = memory;
-          
+          cpuTemperature = temperature;
+
           dataGauge.setValue(0, 1, temperature);
           dataGauge.setValue(1, 1, memory);
           dataGauge.setValue(2, 1, cpu);
@@ -62,7 +63,6 @@
 
           google.charts.load('current', {'packages':['gauge']});
           var gauge_chart = new google.visualization.Gauge(document.getElementById('gauge_chart'));
-          console.log("DATAGAUGE: " + gauge_chart);
           gauge_chart.draw(dataGauge, options);
         }
         
@@ -75,9 +75,10 @@
             });
             socket.on('refresh-temperature',function(temperature, data){
               console.log("refresh-temperature: " + temperature + " Data: " + data);
-              arrCpuTempChart.push(data)
-              dataCpuTempChart = google.visualization.arrayToDataTable(arrCpuTempChart)
+              arrCpuTempChart.push(data);
+              dataCpuTempChart = google.visualization.arrayToDataTable(arrCpuTempChart);
               drawGauges(temperature, memoryPercentage, cpuPercentage);
+              drawTemperatureChart(dataCpuTempChart);
             });
             socket.on('refresh-cpu',function(cpu){
               drawGauges(cpuTemperature, memoryPercentage, cpu);

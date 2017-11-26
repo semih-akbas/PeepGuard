@@ -31,7 +31,6 @@ var logCurrentCPUTemperature = function (maxLogCount, socket) {
     }
     fs.writeFileSync(logPath, fileContent);  
     socket.emit('refresh-temperature',temperature, dataArr);
-    
     var memoryPercentage = ((os.freemem() / os.totalmem())*100).toFixed(0);
     socket.emit("refresh-memory", memoryPercentage);
     
