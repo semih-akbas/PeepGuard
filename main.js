@@ -5,7 +5,25 @@ var path        = require('path');
 var exphbs      = require('express-handlebars');
 var io          = require('socket.io')(http);
 var common      = require('./helpers/common');
-var cors 		= require('cors')
+var cors 		= require('cors');
+var gpio		= require('rpi-gpio');
+
+
+//SW-420 Sensor GPIO//////////////////////////////////////////////////////////////////////////////////////
+//gpio.setup(7, gpio.DIR_IN, readInput);
+
+function readInput() {
+   gpio.read(17, function(err, value) {
+	   console.log('The value is ' + value);
+   });
+}
+
+gpio.on('change', function(channel, value) {
+    console.log('Channel ' + channel + ' value is now ' + value);
+});
+gpio.setup(17, gpio.DIR_IN, gpio.EDGE_BOTH);
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Start CPU Temp Logging
 var cpuTempLogInterval = 1000;
