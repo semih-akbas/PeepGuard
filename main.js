@@ -13,7 +13,7 @@ var gpio		= require('rpi-gpio');
 //gpio.setup(7, gpio.DIR_IN, readInput);
 
 function readInput() {
-   gpio.read(17, function(err, value) {
+   gpio.read(14, function(err, value) {
 	   console.log('The value is ' + value);
    });
 }
@@ -28,7 +28,8 @@ gpio.setup(17, gpio.DIR_IN, gpio.EDGE_BOTH);
 //Start CPU Temp Logging
 var cpuTempLogInterval = 1000;
 setInterval(function(){
-    common.logCurrentCPUTemperature(400, io);
+	common.logCurrentCPUTemperature(400, io);
+	readInput();
 }, cpuTempLogInterval);
 
 //TODO:Add GPIO package for Raspberry PI
