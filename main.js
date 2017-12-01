@@ -6,23 +6,23 @@ var exphbs      = require('express-handlebars');
 var io          = require('socket.io')(http);
 var common      = require('./helpers/common');
 var cors 		= require('cors');
-var gpio		= require('rpi-gpio');
+var gpio		= require('gpio');
 
 
 //SW-420 Sensor GPIO//////////////////////////////////////////////////////////////////////////////////////
-//gpio.setup(7, gpio.DIR_IN, readInput);
+var gpio14 		= gpio.export(4, {
+					direction: "in",
+					ready: function() {
+					}
+				});
+gpio14.on("change", function(val) {
+	console.log("Value changed, new value is: " + val);
+ });
 
-function readInput() {
-   gpio.read(14, function(err, value) {
-	   console.log('The value is ' + value);
-   });
-}
-
-gpio.on('change', function(channel, value) {
-    console.log('Channel ' + channel + ' value is now ' + value);
-});
-gpio.setup(17, gpio.DIR_IN, gpio.EDGE_BOTH);
-
+ function readInput() {
+	console.log('The value is: ' + gpio14.value);
+ }
+ 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Start CPU Temp Logging
