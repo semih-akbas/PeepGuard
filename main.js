@@ -29,7 +29,7 @@ gpio14.on("change", function(val) {
 var cpuTempLogInterval = 1000;
 setInterval(function(){
 	common.logCurrentCPUTemperature(400, io);
-	readInput();
+	//readInput();
 }, cpuTempLogInterval);
 
 //TODO:Add GPIO package for Raspberry PI
