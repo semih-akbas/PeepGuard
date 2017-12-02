@@ -10,7 +10,7 @@ var gpio		= require('gpio');
 
 
 //SW-420 Sensor GPIO//////////////////////////////////////////////////////////////////////////////////////
-var gpio14 		= gpio.export(4, {
+var gpio14 		= gpio.export(14, {
 					direction: "in",
 					ready: function() {
 					}
