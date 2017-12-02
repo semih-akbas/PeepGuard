@@ -7,6 +7,7 @@ var io          = require('socket.io')(http);
 var common      = require('./helpers/common');
 var cors 		= require('cors');
 var gpio		= require('gpio');
+var moment      = require('moment');
 
 
 //SW-420 Sensor GPIO//////////////////////////////////////////////////////////////////////////////////////
@@ -16,7 +17,9 @@ var gpio14 		= gpio.export(14, {
 					}
 				});
 gpio14.on("change", function(val) {
-	console.log("Value changed, new value is: " + val);
+	if(1 == val){
+		console.log(moment().format('YYYY-MM-DD hh:mm:ss') + "Motion detected!");
+	}
  });
 
  function readInput() {
