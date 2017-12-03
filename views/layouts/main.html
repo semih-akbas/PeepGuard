@@ -85,59 +85,67 @@
             });
             socket.on('refresh-memory',function(memory){
               drawGauges(cpuTemperature, memory, cpuPercentage);
+            });            
+            socket.on('last-vibration',function(dtLastVibration, strLastVibration){
+              $("#lblLastVibration").text = strLastVibration;
             });
       });
       </script>
     </head>
     <body>
-      <div style = "padding:20px;">
+      <div style = "padding:10px;">
         <h2>PeepGuard: Diagnostics</h2>
       </div>
       <table>
           <tr>
-            <td colspan="2">&nbsp;</td>
+            <td style="padding:12px;"><span>Last vibration received on </span><span id="lblLastVibration" style="color:red;"></span></td>
           </tr>
-          <tr>
-            <td colspan="2">
-              <div id = "gauge_chart"
-              style = "width: 200px;
-                       height: 200px;
-                       padding: 10px;
-                       margin-left:10px;"
+      </table>
+      <table>
+        <tr>
+          <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <div id = "gauge_chart"
+            style = "width: 200px;
+                      height: 120px;
+                      padding: 10px;
+                      margin-left:10px;"
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+              <div id = "cputemp_chart"
+              class = "jumbotron"
+              style = "width: 600px;
+                        height: 200px;
+                        padding: 0px;
+                        margin-left:-10px;
+                        margin-top:40px;">
               </div>
-            </td>
-          </tr>
-          <tr>
-            <td>
-                <div>{{deneme}}</div>
-                <td>
-                    <div id = "memory_chart"
-                    style = "width: 200px;
-                             height: 200px;
-                             padding: 5px;"
-                    </div>
-                </td>
-            </td>
-          </tr>
-          <tr>
-            <td>
-                <div id = "cputemp_chart"
-                class = "jumbotron"
-                style = "width: 600px;
-                         height: 200px;
-                         padding: 0px;
-                         margin-left:-10px;
-                         margin-top:40px;">
-                </div>
-            </td>
-            <td>
-                <div id = "disk_chart"
-                style = "width: 200px;
-                         height: 200px;
-                         padding: 5px;"
-                </div>
-            </td>
-          </tr>
+          </td>
+          <td>
+              <div id = "disk_chart"
+              style = "width: 200px;
+                        height: 200px;
+                        padding: 5px;"
+              </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+              <div>{{deneme}}</div>
+              <td>
+                  <div id = "memory_chart"
+                  style = "width: 200px;
+                            height: 200px;
+                            padding: 5px;"
+                  </div>
+              </td>
+          </td>
+        </tr>
      </table>    
       
       

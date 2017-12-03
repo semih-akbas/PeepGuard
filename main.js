@@ -11,6 +11,8 @@ var moment      = require('moment');
 
 
 //SW-420 Sensor GPIO//////////////////////////////////////////////////////////////////////////////////////
+var dtLastVibration;
+var strLastVibration = "N/A";
 var gpio14 		= gpio.export(14, {
 					direction: "in",
 					ready: function() {
@@ -18,7 +20,10 @@ var gpio14 		= gpio.export(14, {
 				});
 gpio14.on("change", function(val) {
 	if(1 == val){
-		console.log(moment().format('YYYY-MM-DD hh:mm:ss') + "Motion detected!");
+		dtLastVibration = moment();
+		strLastVibration = dtLastVibration.format('YYYY-MM-DD hh:mm:ss');
+		console.log(strLastVibration + " Motion detected!");
+		socket.emit("last-vibration", dtLastVibration, strLastVibration);
 	}
  });
 
