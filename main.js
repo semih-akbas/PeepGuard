@@ -24,7 +24,11 @@ gpio14.on("change", function(val) {
 		strLastVibration = dtLastVibration.format('YYYY-MM-DD hh:mm:ss');
 		console.log(strLastVibration + " Motion detected!");
 		
-		if(socket){
+		if(typeof socket === 'undefined'){
+			console.log('Socket not defined.');
+		}
+		else
+		{
 			socket.emit("last-vibration", dtLastVibration, strLastVibration);
 		}
 	}
