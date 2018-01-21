@@ -23,7 +23,10 @@ gpio14.on("change", function(val) {
 		dtLastVibration = moment();
 		strLastVibration = dtLastVibration.format('YYYY-MM-DD hh:mm:ss');
 		console.log(strLastVibration + " Motion detected!");
-		socket.emit("last-vibration", dtLastVibration, strLastVibration);
+		
+		if(socket){
+			socket.emit("last-vibration", dtLastVibration, strLastVibration);
+		}
 	}
  });
 
